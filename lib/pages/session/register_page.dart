@@ -41,7 +41,7 @@ final _formKey = GlobalKey<FormState>();
 
       ClientService clientService = ClientService();
       Client newClient = Client(
-        id: 0, // La ID se auto-incrementará en la base de datos
+        id: 0,
         name: name,
         lastName: lastName,
         mail: email,
@@ -55,7 +55,7 @@ final _formKey = GlobalKey<FormState>();
           Provider.of<ClientProvider>(context, listen: false).setClientId(clientId);
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => Navbar(client: newClient)), // Navega a MyHomePage
+            MaterialPageRoute(builder: (context) => Navbar(client: newClient)),
           );
         } else {
           setState(() {

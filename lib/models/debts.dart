@@ -34,6 +34,6 @@ class Debts {
     'amount': amount,
     'description': description,
     'relevance': relevance,
-    'clientId': client.toJson(), // Aquí se convierte el objeto Client a JSON
+    'clientId': client.toJson(),
   };
 }

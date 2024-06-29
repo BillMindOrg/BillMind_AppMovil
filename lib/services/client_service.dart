@@ -28,7 +28,7 @@ class ClientService {
         final data = jsonDecode(response.body);
         return Client.fromJson(data);
       } else if (response.statusCode == 401) {
-        return null; // Credenciales incorrectas
+        return null;
       } else {
         throw Exception('Failed to login: ${response.statusCode}');
       }

@@ -119,7 +119,7 @@ class _DebtsPageState extends State<DebtsPage> {
                   relevance: selectedRelevance ?? '',
                   client: Client(
                     id: widget.clientId,
-                    name: '', // Aquí deberías obtener estos valores de algún lugar o dejarlos vacíos según tu lógica
+                    name: '', 
                     lastName: '',
                     mail: '',
                     phone: '',
@@ -152,7 +152,7 @@ class _DebtsPageState extends State<DebtsPage> {
         return const Icon(Icons.low_priority, color: Colors.green);
       default:
         return const Icon(
-            Icons.error); // En caso de que no se reconozca la relevancia
+            Icons.error); 
     }
   }
 
