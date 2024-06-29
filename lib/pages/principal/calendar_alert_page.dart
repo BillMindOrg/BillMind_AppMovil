@@ -40,6 +40,7 @@ class _CalendarAlertPageState extends State<CalendarAlertPage> {
       throw Exception('Error fetching debts: $e');
     }
   }
+  
 
   void _groupDebtsByDate(List<Debts> debts) {
     _debtsByDate.clear();
