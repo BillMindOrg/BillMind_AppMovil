@@ -8,6 +8,7 @@ class Debts {
   final String relevance;
   final Client client;
   
+  
   Debts({
     required this.id,
     required this.expiration,
