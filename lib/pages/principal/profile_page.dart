@@ -34,6 +34,77 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  void _editClient(Client client) {
+    final nameController = TextEditingController(text: client.name);
+    final lastNameController = TextEditingController(text: client.lastName);
+    final mailController = TextEditingController(text: client.mail);
+    final phoneController = TextEditingController(text: client.phone);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Editar perfil'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(labelText: 'Nombre'),
+              ),
+              TextField(
+                controller: lastNameController,
+                decoration: const InputDecoration(labelText: 'Apellido'),
+              ),
+              TextField(
+                controller: mailController,
+                decoration: const InputDecoration(labelText: 'Correo'),
+              ),
+              TextField(
+                controller: phoneController,
+                decoration: const InputDecoration(labelText: 'Teléfono'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                final updatedClient = Client(
+                  id: client.id,
+                  name: nameController.text,
+                  lastName: lastNameController.text,
+                  mail: mailController.text,
+                  phone: phoneController.text,
+                  password: client.password,
+                );
+                final service = ClientService();
+                await service.updateClient(client.id, updatedClient);
+
+                setState(() {
+                  _client = fetchClient();
+                });
+
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Perfil actualizado'),
+                  ),
+                );
+              },
+              child: const Text('Guardar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,12 +135,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     leading: const Icon(Icons.person),
                     title: const Text('Nombre'),
                     subtitle: Text(client.name),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        // Acción para editar el nombre
-                      },
-                    ),
                   ),
                 ),
                 Card(
@@ -78,12 +143,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     leading: const Icon(Icons.person_outline),
                     title: const Text('Apellido'),
                     subtitle: Text(client.lastName),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        // Acción para editar el apellido
-                      },
-                    ),
                   ),
                 ),
                 Card(
@@ -92,12 +151,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     leading: const Icon(Icons.email),
                     title: const Text('Correo'),
                     subtitle: Text(client.mail),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        // Acción para editar el correo
-                      },
-                    ),
                   ),
                 ),
                 Card(
@@ -106,21 +159,28 @@ class _ProfilePageState extends State<ProfilePage> {
                     leading: const Icon(Icons.phone_android),
                     title: const Text('Teléfono'),
                     subtitle: Text(client.phone),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        // Acción para llamar al número de teléfono
-                      },
-                    ),
                   ),
                 ),
-                // Agrega más tarjetas o botones según sea necesario
               ],
             );
           } else {
             return const Center(
               child: CircularProgressIndicator(),
             );
+          }
+        },
+      ),
+      floatingActionButton: FutureBuilder<Client>(
+        future: _client,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            return FloatingActionButton(
+              onPressed: () => _editClient(snapshot.data!),
+              child: const Icon(Icons.edit),
+            );
+          } else {
+            return Container();
           }
         },
       ),
